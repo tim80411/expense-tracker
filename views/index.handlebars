@@ -1,1 +1,46 @@
-<h1>express server sucess in handlebars</h1>
+<div class="container">
+  <div class="row justify-content-center">
+    <form action="/">
+      <select name="category" id="category">
+        <option value="">類別</option>
+        <option value="home">家居物業</option>
+        <option value="traffic">交通出行</option>
+        <option value="entertainment">休閒娛樂</option>
+        <option value="food">餐飲食品</option>
+        <option value="other">其他</option>
+      </select>
+    </form>
+  </div>
+
+  <div class="row justify-content-center">
+    <label for="">總金額：<h1 class="font-weight-bold" style="display: inline-block; color: goldenrod; font-size: 5em;">600</h1></label>
+  </div>
+
+  <div class="row">
+    {{#each lists}}
+    <div class="col-2"></div>
+    <form action="/" class="col-8 px-5">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">$</span>
+          <span class="input-group-text">0.00</span>
+        </div>
+        <input type="text" class="form-control" placeholder="Recipient's username"
+          aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
+        <div class="input-group-append" id="button-addon4">
+          <a class="btn btn-outline-info" href="/edit">修改</a>
+          <button class="btn btn-outline-danger" type="submit">刪除</button>
+        </div>
+      </div>
+    </form>
+    <div class="col-2"></div>
+    {{/each}}
+  </div>
+  
+
+  <form action="/new" class="row justify-content-center">
+    <button class="btn btn-outline-warning" type="submit">新增支出</button>
+  </form>
+
+
+</div>
