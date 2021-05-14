@@ -20,11 +20,17 @@ const app = express()
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
+// route: browse all expenses
 app.get('/', (req, res) => {
-  const lists = [0, 1, 2, 3, 4]
-  res.render('index', { lists })
+  return Record.find()
+    .populate('category')
+    .lean()
+    .then(lists => {
+      console.log(lists)
+      return res.render('index', { lists })
+    })
 })
 
 app.listen(3000, () => {
-  console.log('Express server is running on https://localhost:300')
+  console.log('Express server is running on https://localhost:3000')
 })

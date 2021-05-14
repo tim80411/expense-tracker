@@ -13,21 +13,29 @@
   </div>
 
   <div class="row justify-content-center">
-    <label for="">總金額：<h1 class="font-weight-bold" style="display: inline-block; color: goldenrod; font-size: 5em;">600</h1></label>
+    <label for="">總金額：<h1 class="font-weight-bold" style="display: inline-block; color: goldenrod; font-size: 5em;">600
+      </h1></label>
   </div>
 
   <div class="row">
     {{#each lists}}
     <div class="col-2"></div>
     <form action="/" class="col-8 px-5">
-      <div class="input-group">
+      <div class="input-group input-group-lg">
         <div class="input-group-prepend">
-          <span class="input-group-text">$</span>
-          <span class="input-group-text">0.00</span>
+          <div class="input-group-text">
+            <i class="{{this.category.font}}"></i>
+          </div>
         </div>
-        <input type="text" class="form-control" placeholder="Recipient's username"
+        <div class="form-control">
+          <p class="my-0">{{this.name}}</p>
+          <span>>{{this.date}}</span>
+        </div>
+        {{!-- <input type="text" class="form-control" placeholder="Recipient's username"
           aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
+        <small class="form-text text-muted">2021-05-13</small> --}}
         <div class="input-group-append" id="button-addon4">
+          <span class="input-group-text mr-3">{{this.amount}}</span>
           <a class="btn btn-outline-info" href="/edit">修改</a>
           <button class="btn btn-outline-danger" type="submit">刪除</button>
         </div>
@@ -36,9 +44,11 @@
     <div class="col-2"></div>
     {{/each}}
   </div>
-  
+    <div class="col-2"></div>
+  </div>
 
-  <form action="/new" class="row justify-content-center">
+
+  <form action="/new" class="row justify-content-center mt-5">
     <button class="btn btn-outline-warning" type="submit">新增支出</button>
   </form>
 
