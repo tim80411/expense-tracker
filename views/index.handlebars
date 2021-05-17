@@ -31,12 +31,9 @@
           <p class="my-0">{{this.name}}</p>
           <span>>{{this.date}}</span>
         </div>
-        {{!-- <input type="text" class="form-control" placeholder="Recipient's username"
-          aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
-        <small class="form-text text-muted">2021-05-13</small> --}}
         <div class="input-group-append" id="button-addon4">
           <span class="input-group-text mr-3">{{this.amount}}</span>
-          <a class="btn btn-outline-info" href="/edit">修改</a>
+          <a class="btn btn-outline-info" href="/{{this._id}}/edit">修改</a>
           <button class="btn btn-outline-danger" type="submit">刪除</button>
         </div>
       </div>

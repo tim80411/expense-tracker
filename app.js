@@ -2,10 +2,16 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
+const helpers = require('./config/helpers')
 const Record = require('./models/Record')
 const Category = require('./models/Record').category
 
-mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost/expense-tracker', { 
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false 
+})
 
 const db = mongoose.connection
 
@@ -19,11 +25,15 @@ db.once('open', () => {
 
 const app = express()
 
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
+app.engine('handlebars', exphbs({
+  defaultLayout: 'main',
+  helpers: helpers
+}))
 app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // route: add expense function
 app.get('/new', (req, res) => {
@@ -38,14 +48,22 @@ app.get('/new', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-  const { name, date, category, amount} = req.body
-  return Record.create({name, date, category, amount})
-  .then(() => {
-    res.redirect('/')
-  })
-  .catch((err) => {
-    console.error(err)
-  })
+  const { name, date, category, amount } = req.body
+
+  const record = new Record({ name, date, category, amount })
+
+  return record.save()
+    .then(() => {
+      return Category.findOne({ _id: category })
+        .then(categoryFound => {
+          categoryFound.record.push(category)
+          return categoryFound.save()
+            .then(() => {
+              console.log(categoryFound.record)
+              res.redirect('/')
+            })
+        })
+    })
 })
 
 // route: browse all expenses
@@ -59,6 +77,66 @@ app.get('/', (req, res) => {
     .catch(err => {
       console.error(err)
     })
+})
+
+// route: update expense
+app.get('/:id/edit', (req, res) => {
+  const id = req.params.id
+
+  return Category.find()
+    .lean()
+    .then(categorys => {
+      return Record.findById(id)
+        .populate('category')
+        .lean()
+        .then(record => {
+          const date = record.date
+          let dateString = ''
+
+          dateString = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`
+
+          res.render('edit', { categorys, record, dateString })
+        })
+    })
+    .catch(err => {
+      console.error(err)
+    })
+})
+
+app.put('/:id', (req, res) => {
+  const id = req.params.id
+  const { name, date, category, amount } = req.body
+
+  return Record.findById(id)
+    .then(recordFound => {
+      // 原類別 remove old record
+      return Category.findOneAndUpdate({ _id: recordFound.category, record: recordFound._id}, { $pull: { 'record': recordFound._id } })
+        .then(() => {
+          // 新類別 add new record
+          return Category.findOneAndUpdate({ _id: category }, { $addToSet: { 'record': recordFound._id } })
+            .then(() => {
+              recordFound.name = name
+              recordFound.date = date
+              recordFound.category = category
+              recordFound.amount = amount
+
+              return recordFound.save()
+                .then(() => {
+                  res.redirect('/')
+                })
+                .catch(err => {
+                  console.error(err)
+                })
+            })
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    })
+    .catch(err => {
+      console.error(err)
+    })
+
 })
 
 app.listen(3000, () => {
