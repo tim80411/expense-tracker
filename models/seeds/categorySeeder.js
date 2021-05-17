@@ -35,12 +35,14 @@ db.on('error', () => {
 
 db.once('open', () => {
   console.log('mongodb connect success!')
+  console.log('start creat category seed')
+  
   return Category.create(datas)
     .then(() => {
-      console.log('create success')
+      console.log('category create success')
       return db.close()
     }).then(() => {
-      console.log('db connection close')
+      console.log('db connection close success')
     }).catch(error => {
       console.error(error)
     })

@@ -31,30 +31,50 @@ db.on('error', () => {
   console.log('mondodb connect failed!')
 })
 
+// set up expense seed and renew Category's record
 db.once('open', () => {
   console.log('mongodb connect success!')
-  let dbCloseCount = 0
-  expenses.forEach(expense => {
-    Category.findOne({ name: expense.category })
-      .lean()
-      .then(categoryFind => {
-        expense.category = categoryFind._id
-      }).then(() => {
-        return Record.create(expense)
-          .then(() => {
-            console.log(`${expense.name} expense create success`)
-            dbCloseCount++
-          }).catch(err => {
-            console.error(err)
-            dbCloseCount++
-          })
-      }).then(() => {
-        if (dbCloseCount === expenses.length) {
-          return db.close()
-            .then(() => {
-              console.log('db connection close')
-            })
-        }
+
+  let dbClosedCount = 0
+
+  return Category.find()
+    .then(categorys => {
+      categorys.forEach(category => {
+        expenses.forEach(expense => {
+          if (category.name === expense.category) {
+            expense.category = category._id
+            
+            const recordTemp = new Record(expense)
+
+            return recordTemp.save()
+              .then(() => {
+                console.log(`${expense.name} expense create success`)
+
+                category.record = recordTemp._id
+                
+                return category.save()
+                  .then(() => {
+                    console.log(`${category.name} category renew success`)
+                    dbClosedCount++
+                  })
+                  .catch(err => {
+                    console.error(err)
+                    dbClosedCount++
+                  })
+              })
+              .then(() => {
+                if (dbClosedCount === expenses.length) {
+                  return db.close()
+                    .then(() => {
+                      console.log('db connection close success')
+                    })
+                    .catch(err => {
+                      console.error(err)
+                    })
+                }
+              })
+          }
+        })
       })
-  })
+    })
 })
