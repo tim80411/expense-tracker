@@ -56,10 +56,9 @@ app.post('/', (req, res) => {
     .then(() => {
       return Category.findOne({ _id: category })
         .then(categoryFound => {
-          categoryFound.record.push(category)
+          categoryFound.record.push(record._id)
           return categoryFound.save()
             .then(() => {
-              console.log(categoryFound.record)
               res.redirect('/')
             })
         })
@@ -72,7 +71,11 @@ app.get('/', (req, res) => {
     .populate('category')
     .lean()
     .then(lists => {
-      return res.render('index', { lists })
+      return Category.find()
+        .lean()
+        .then(categorys => {
+          res.render('index', { lists, categorys })
+        })
     })
     .catch(err => {
       console.error(err)
@@ -145,15 +148,39 @@ app.delete('/:id', (req, res) => {
 
   return Record.findById(id)
     .then(recordFound => {
-      console.log('recordFound', recordFound)
       return Category.findOneAndUpdate({ _id: recordFound.category }, { $pull: { 'record': recordFound._id } })
-        .then(categoeryFound => {
-          console.log('categoeryFound', categoeryFound)
+        .then(() => {
           return recordFound.remove()
             .then(() => {
               res.redirect('/')
             })
         })
+    })
+})
+
+// route: sort function
+
+app.get('/sort', (req, res) => {
+  const categoryName = req.query.category
+
+  return Category.find()
+    .populate({
+      path: 'record',
+      populate: [{
+        path: 'category'
+      }]
+    })
+    .lean()
+    .then(categorys => {
+      const categoryFiltered = categorys.filter(category => category.name === categoryName)
+
+      const lists = categoryFiltered[0].record
+
+      res.render('index', { lists, categoryName, categorys })
+
+    })
+    .catch(err => {
+      console.error(err)
     })
 })
 

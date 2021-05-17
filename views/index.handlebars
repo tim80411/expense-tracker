@@ -1,13 +1,13 @@
 <div class="container">
   <div class="row justify-content-center">
-    <form action="/">
-      <select name="category" id="category">
-        <option value="">類別</option>
-        <option value="home">家居物業</option>
-        <option value="traffic">交通出行</option>
-        <option value="entertainment">休閒娛樂</option>
-        <option value="food">餐飲食品</option>
-        <option value="other">其他</option>
+    <form action="/sort">
+      <select name="category" id="category" class="form-control" onchange="this.form.submit()">
+        <option value="">請選擇類別</option>
+        {{#each categorys}}
+        <option value="{{this.name}}" {{#if (eq this.name ../categoryName )}} selected {{/if}}>
+          {{this.name}}
+        </option>
+        {{/each}}
       </select>
     </form>
   </div>
@@ -20,7 +20,7 @@
   <div class="row">
     {{#each lists}}
     <div class="col-2"></div>
-    <form action="/{{this._id}}?_method=DELETE" method="POST" class="col-8 px-5">
+    <div class="col-8 px-5">
       <div class="input-group input-group-lg">
         <div class="input-group-prepend">
           <div class="input-group-text">
@@ -31,23 +31,23 @@
           <p class="my-0">{{this.name}}</p>
           <span>>{{this.date}}</span>
         </div>
-        <div class="input-group-append" id="button-addon4">
+        <form class="input-group-append" action="/{{this._id}}?_method=DELETE" method="POST">
           <span class="input-group-text mr-3">{{this.amount}}</span>
           <a class="btn btn-outline-info" href="/{{this._id}}/edit">修改</a>
           <button class="btn btn-outline-danger" type="submit">刪除</button>
-        </div>
+        </form>
       </div>
-    </form>
+    </div>
     <div class="col-2"></div>
     {{/each}}
   </div>
-    <div class="col-2"></div>
-  </div>
+  <div class="col-2"></div>
+</div>
 
 
-  <form action="/new" class="row justify-content-center mt-5">
-    <button class="btn btn-outline-warning" type="submit">新增支出</button>
-  </form>
+<form action="/new" class="row justify-content-center mt-5">
+  <button class="btn btn-outline-warning" type="submit">新增支出</button>
+</form>
 
 
 </div>

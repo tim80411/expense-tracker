@@ -32,7 +32,7 @@ const categoryShcema = new Schema({
   },
   record: [{
     type: Schema.Types.ObjectId,
-    ref: 'Category'
+    ref: 'Record'
   }]
 })
 
