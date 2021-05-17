@@ -7,10 +7,10 @@ const helpers = require('./config/helpers')
 const Record = require('./models/Record')
 const Category = require('./models/Record').category
 
-mongoose.connect('mongodb://localhost/expense-tracker', { 
+mongoose.connect('mongodb://localhost/expense-tracker', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false 
+  useFindAndModify: false
 })
 
 const db = mongoose.connection
@@ -110,7 +110,7 @@ app.put('/:id', (req, res) => {
   return Record.findById(id)
     .then(recordFound => {
       // 原類別 remove old record
-      return Category.findOneAndUpdate({ _id: recordFound.category, record: recordFound._id}, { $pull: { 'record': recordFound._id } })
+      return Category.findOneAndUpdate({ _id: recordFound.category, record: recordFound._id }, { $pull: { 'record': recordFound._id } })
         .then(() => {
           // 新類別 add new record
           return Category.findOneAndUpdate({ _id: category }, { $addToSet: { 'record': recordFound._id } })
@@ -137,6 +137,24 @@ app.put('/:id', (req, res) => {
       console.error(err)
     })
 
+})
+
+// route: delete expense function
+app.delete('/:id', (req, res) => {
+  const id = req.params.id
+
+  return Record.findById(id)
+    .then(recordFound => {
+      console.log('recordFound', recordFound)
+      return Category.findOneAndUpdate({ _id: recordFound.category }, { $pull: { 'record': recordFound._id } })
+        .then(categoeryFound => {
+          console.log('categoeryFound', categoeryFound)
+          return recordFound.remove()
+            .then(() => {
+              res.redirect('/')
+            })
+        })
+    })
 })
 
 app.listen(3000, () => {
