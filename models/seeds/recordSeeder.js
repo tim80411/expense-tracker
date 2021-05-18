@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const Record = require('../Record')
 const Category = require('../Record').category
 
+const db = require('../../config/mongoose')
+
 const expenses = [
   {
     name: '上學',
@@ -23,18 +25,8 @@ const expenses = [
   },
 ]
 
-mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true })
-
-const db = mongoose.connection
-
-db.on('error', () => {
-  console.log('mondodb connect failed!')
-})
-
 // set up expense seed and renew Category's record
 db.once('open', () => {
-  console.log('mongodb connect success!')
-
   let dbClosedCount = 0
 
   return Category.find()
@@ -66,7 +58,7 @@ db.once('open', () => {
                 if (dbClosedCount === expenses.length) {
                   return db.close()
                     .then(() => {
-                      console.log('db connection close success')
+                      console.log('db connection close')
                     })
                     .catch(err => {
                       console.error(err)

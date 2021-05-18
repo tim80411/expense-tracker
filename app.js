@@ -1,27 +1,11 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
-const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const helpers = require('./config/helpers')
-const Record = require('./models/Record')
-const Category = require('./models/Record').category
+const router = require('./routes/index')
 
-mongoose.connect('mongodb://localhost/expense-tracker', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
-})
-
-const db = mongoose.connection
-
-db.on('error', () => {
-  console.log('mondodb connect failed!')
-})
-
-db.once('open', () => {
-  console.log('mongodb connect success!')
-})
+require('./config/mongoose.js')
 
 const app = express()
 

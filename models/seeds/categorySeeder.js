@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Category = require('../Record').category
+const db = require('../../config/mongoose.js')
 
 const datas = [
   {
@@ -24,17 +25,7 @@ const datas = [
   },
 
 ]
-
-mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true })
-
-const db = mongoose.connection
-
-db.on('error', () => {
-  console.log('mondodb connect failed!')
-})
-
 db.once('open', () => {
-  console.log('mongodb connect success!')
   console.log('start creat category seed')
   
   return Category.create(datas)

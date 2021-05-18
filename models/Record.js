@@ -36,8 +36,6 @@ const categoryShcema = new Schema({
   }]
 })
 
-
-
 module.exports = mongoose.model('Record', recordSchema)
 
 module.exports.category = mongoose.model('Category', categoryShcema)
