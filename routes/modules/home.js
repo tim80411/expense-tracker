@@ -46,6 +46,15 @@ router.get('/sort', (req, res) => {
 
       const lists = categoryFiltered[0].record
 
+      lists.forEach(list => {
+        const date = list.date
+        let dateString = ''
+
+        dateString = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`
+
+        list.date = dateString
+      })
+
       res.render('index', { lists, categoryName, categorys })
 
     })
