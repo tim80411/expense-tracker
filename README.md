@@ -1,6 +1,12 @@
 # 老爸私房錢
 使用Express製作的記帳網路應用程式
 
+## 首頁
+![Webpicture](/public/homepage.jpg)
+
+## 新增頁
+![Webpicture](/public/createpage.jpg)
+
 ## 功能
 1. 使用者可以瀏覽所有消費
 2. 使用者可以新增消費紀錄
@@ -10,10 +16,12 @@
 6. 自動加總所有消費的金額
 
 ## 環境與套件
-* Node.js
-* Express
-* handlebars
-* Bootstrap 4
+* [Node.js](https://nodejs.org/en/)
+* [Express](https://expressjs.com/)
+* [Bootstrap 4](https://getbootstrap.com/docs/4.6/getting-started/introduction/)
+* [mongoose](https://mongoosejs.com/)
+* [mongodb](https://www.mongodb.com/)
+
 
 ## 安裝與執行步驟
 1. 使用終端機，clone此專案到local位置
