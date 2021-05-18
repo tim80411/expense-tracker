@@ -1,0 +1,12 @@
+td, th {
+  text-align: center;
+}
+
+.table tbody tr td {
+  vertical-align: middle;
+}
+
+.total-price {
+  color: goldenrod;
+  font-size: 5em;
+}

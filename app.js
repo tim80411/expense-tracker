@@ -74,6 +74,14 @@ app.get('/', (req, res) => {
       return Category.find()
         .lean()
         .then(categorys => {
+          lists.forEach(list => {
+            const date = list.date
+            let dateString = ''
+            
+            dateString = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`
+            
+            list.date = dateString
+          })
           res.render('index', { lists, categorys })
         })
     })
