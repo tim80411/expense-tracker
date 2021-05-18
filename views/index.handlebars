@@ -13,7 +13,8 @@
   </div>
 
   <div class="row justify-content-center">
-    <label for="">總金額：<h1 class="font-weight-bold" style="display: inline-block; color: goldenrod; font-size: 5em;">600
+    <label for="">總金額：<h1 class="font-weight-bold total-price"
+        style="display: inline-block; color: goldenrod; font-size: 5em;">600
       </h1></label>
   </div>
 
@@ -32,7 +33,7 @@
           <span>>{{this.date}}</span>
         </div>
         <form class="input-group-append" action="/{{this._id}}?_method=DELETE" method="POST">
-          <span class="input-group-text mr-3">{{this.amount}}</span>
+          <span class="input-group-text mr-3 amount">{{this.amount}}</span>
           <a class="btn btn-outline-info" href="/{{this._id}}/edit">修改</a>
           <button class="btn btn-outline-danger" type="submit">刪除</button>
         </form>
@@ -48,6 +49,3 @@
 <form action="/new" class="row justify-content-center mt-5">
   <button class="btn btn-outline-warning" type="submit">新增支出</button>
 </form>
-
-
-</div>
