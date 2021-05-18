@@ -1,11 +1,14 @@
 {{js "/js/validation.js"}}
 
-<form action="/record" class="container needs-validation" method="POST" novalidate>
+<form action="/record" class="container needs-validation mt-4" method="POST" novalidate>
   <div class="row justify-content-center">
     <div class="col-6">
       <div class="form-group">
         <label for="name">名稱*</label>
         <input type="text" class="form-control" id="name" name="name" required>
+        <div class="invalid-feedback">
+          請輸入至少一個字
+        </div>
       </div>
     </div>
   </div>
@@ -14,6 +17,9 @@
       <div class="form-group">
         <label for="date">日期*</label>
         <input type="date" class="form-control" id="date" name="date" required>
+        <div class="invalid-feedback">
+          請輸入正確日期或使用表格右方的月曆功能
+        </div>
       </div>
     </div>
   </div>
@@ -38,7 +44,10 @@
     <div class="col-6">
       <div class="form-group">
         <label for="amount">金額*</label>
-        <input type="number" class="form-control" id="amount" name="amount" required>
+        <input type="number" class="form-control" id="amount" name="amount" min="0" required>
+        <div class="invalid-feedback">
+          請輸入大於0的整數
+        </div>
       </div>
     </div>
   </div>
@@ -49,4 +58,3 @@
     </div>
   </div>
 </form>
-
