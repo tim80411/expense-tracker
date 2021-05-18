@@ -16,7 +16,7 @@ const helpers = exphbs.create({
   js: function (str, option) {
     var jsList = this.jsList || []
     str = str.split(/[,，;；]/)
-    console.log('css: ', str)
+    console.log('js: ', str)
     str.forEach(item => {
       if (jsList.indexOf(item) < 0) {
         jsList.push(item)
