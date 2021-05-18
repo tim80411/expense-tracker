@@ -1,4 +1,3 @@
-const form = document.querySelector('.needs-validation')
 const amounts = document.querySelectorAll('.amount')
 const totalPrice = document.querySelector('.total-price')
 
@@ -13,13 +12,3 @@ function displayTotal() {
 }
 
 displayTotal()
-
-
-form.addEventListener('submit', function (event) {
-  if (!form.checkValidity()) {
-    event.preventDefault()
-    event.stopPropagation()
-  }
-
-  form.classList.add('was-validated')
-})
