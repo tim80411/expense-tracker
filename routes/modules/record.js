@@ -8,8 +8,8 @@ const router = express.Router()
 router.get('/new', (req, res) => {
   return Category.find()
     .lean()
-    .then(categorys => {
-      res.render('new', { categorys })
+    .then(categories => {
+      res.render('new', { categories })
     })
     .catch(err => {
       console.error(err)
@@ -40,7 +40,7 @@ router.get('/:id/edit', (req, res) => {
 
   return Category.find()
     .lean()
-    .then(categorys => {
+    .then(categories => {
       return Record.findById(id)
         .populate('category')
         .lean()
@@ -50,7 +50,7 @@ router.get('/:id/edit', (req, res) => {
 
           dateString = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`
 
-          res.render('edit', { categorys, record, dateString })
+          res.render('edit', { categories, record, dateString })
         })
     })
     .catch(err => {

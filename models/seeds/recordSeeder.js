@@ -29,12 +29,12 @@ db.once('open', () => {
   let dbClosedCount = 0
 
   return Category.find()
-    .then(categorys => {
-      categorys.forEach(category => {
+    .then(categories => {
+      categories.forEach(category => {
         expenses.forEach(expense => {
           if (category.name === expense.category) {
             expense.category = category._id
-            
+
             const recordTemp = new Record(expense)
 
             return recordTemp.save()
@@ -42,7 +42,7 @@ db.once('open', () => {
                 console.log(`${expense.name} expense create success`)
 
                 category.record = recordTemp._id
-                
+
                 return category.save()
                   .then(() => {
                     console.log(`${category.name} category renew success`)

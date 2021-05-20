@@ -32,7 +32,7 @@
         <label for="category">類別*</label>
         <select class="custom-select" name="category" id="category" required>
           <option value="">請選擇類別</option>
-          {{#each categorys}}
+          {{#each categories}}
           <option value="{{this._id}}" {{#if (eq this.name ../record.category.name )}} selected {{/if}}>
             {{this.name}}
           </option>

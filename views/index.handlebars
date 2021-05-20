@@ -9,7 +9,7 @@
       <form action="/sort">
         <select name="category" id="category" class="form-control" onchange="this.form.submit()">
           <option value="">請選擇類別</option>
-          {{#each categorys}}
+          {{#each categories}}
           <option value="{{this.name}}" {{#if (eq this.name ../categoryName )}} selected {{/if}}>
             {{this.name}}
           </option>

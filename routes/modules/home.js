@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
     .then(lists => {
       return Category.find()
         .lean()
-        .then(categorys => {
+        .then(categories => {
           lists.forEach(list => {
             const date = list.date
             let dateString = ''
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 
             list.date = dateString
           })
-          res.render('index', { lists, categorys })
+          res.render('index', { lists, categories })
         })
     })
     .catch(err => {
@@ -40,8 +40,8 @@ router.get('/sort', (req, res) => {
       }]
     })
     .lean()
-    .then(categorys => {
-      const categoryFiltered = categorys.filter(category => category.name === categoryName)
+    .then(categories => {
+      const categoryFiltered = categories.filter(category => category.name === categoryName)
 
       const lists = categoryFiltered[0].record
 
@@ -54,7 +54,7 @@ router.get('/sort', (req, res) => {
         list.date = dateString
       })
 
-      res.render('index', { lists, categoryName, categorys })
+      res.render('index', { lists, categoryName, categories })
 
     })
     .catch(err => {
