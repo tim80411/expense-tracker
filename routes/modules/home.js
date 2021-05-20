@@ -32,6 +32,8 @@ router.get('/', (req, res) => {
 router.get('/sort', (req, res) => {
   const categoryName = req.query.category
 
+  if(!categoryName) return res.redirect('/')
+
   return Category.find()
     .populate({
       path: 'record',
