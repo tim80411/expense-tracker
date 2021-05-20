@@ -22,20 +22,4 @@ const recordSchema = new Schema({
   }
 })
 
-const categoryShcema = new Schema({
-  name: {
-    type: String,
-    require: true
-  },
-  font: {
-    type: String,
-  },
-  record: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Record'
-  }]
-})
-
 module.exports = mongoose.model('Record', recordSchema)
-
-module.exports.category = mongoose.model('Category', categoryShcema)

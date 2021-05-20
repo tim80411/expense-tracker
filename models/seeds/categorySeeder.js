@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-const Category = require('../Record').category
+const Category = require('../Category')
 const db = require('../../config/mongoose.js')
 
 const datas = [

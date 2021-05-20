@@ -1,7 +1,6 @@
 const express = require('express')
 const Record = require('../../models/Record')
-const Category = require('../../models/Record').category
-
+const Category = require('../../models/Category')
 const router = express.Router()
 
 // route: browse all expenses
