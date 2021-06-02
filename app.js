@@ -2,9 +2,15 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const helpers = require('./config/helpers')
 const router = require('./routes/index')
-const PORT = process.env.PORT || 3000
+
+const PORT = process.env.PORT
 
 require('./config/mongoose.js')
 
