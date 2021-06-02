@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
+const bcrypt = require('bcryptjs')
 
 const User = require('../../models/User')
 
@@ -21,16 +22,19 @@ router.post('/register', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
 
   if (password === confirmPassword) {
-    return User.create({
-      name,
-      email,
-      password
-    })
+    bcrypt
+      .genSalt(10)
+      .then(salt => bcrypt.hash(password, salt))
+      .then(hash => User.create({
+        name,
+        email,
+        password: hash
+      }))
       .then(() => res.redirect('/users/login')) // TODO：註冊完應該直接登入
       .catch(err => console.log(err))
+  } else {
+    return res.redirect('/users/register')
   }
-
-  return res.redirect('/users/register')
 })
 
 router.get('/logout', (req, res) => {
