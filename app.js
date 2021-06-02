@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const helpers = require('./config/helpers')
 const router = require('./routes/index')
+const usePassport = require('./config/passport')
 
 const PORT = process.env.PORT
 
@@ -30,6 +31,8 @@ app.use(session({
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+
+usePassport(app)
 
 app.use(router)
 
