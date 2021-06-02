@@ -1,7 +1,8 @@
 const express = require('express')
+const app = express()
 const exphbs = require('express-handlebars')
-const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
+const session = require('express-session')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -14,13 +15,17 @@ const PORT = process.env.PORT
 
 require('./config/mongoose.js')
 
-const app = express()
-
 app.engine('handlebars', exphbs({
   defaultLayout: 'main',
   helpers: helpers
 }))
 app.set('view engine', 'handlebars')
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}))
 
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
