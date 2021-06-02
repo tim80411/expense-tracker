@@ -37,6 +37,11 @@
           </form>
         </div>
       </div>
+      {{#if isAuthenticated}}
+      <a href="/users/logout" class="btn btn-primary">logout</a>
+      {{else}}
+      <a href="/users/login" class="btn btn-primary">login</a>
+      {{/if}}
     </nav>
   </header>
 
