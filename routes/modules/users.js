@@ -26,7 +26,8 @@ router.post('/register', (req, res) => {
       email,
       password
     })
-      .then(() => res.redirect('/'))
+      // TODO：註冊完應該直接登入
+      .then(() => res.redirect('/users/login'))
       .catch(err => console.log(err))
   }
 
