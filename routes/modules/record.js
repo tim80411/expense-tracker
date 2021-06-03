@@ -17,10 +17,10 @@ router.get('/new', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  const { name, date, category, amount } = req.body
+  const { name, date, category, amount, merchant } = req.body
   const userId = req.user._id
 
-  const record = new Record({ name, date, category, amount, userId })
+  const record = new Record({ name, date, category, amount, merchant, userId })
 
   return record.save()
     .then(() => {
@@ -62,7 +62,7 @@ router.get('/:id/edit', (req, res) => {
 router.put('/:id', (req, res) => {
   const _id = req.params.id
   const userId = req.user._id
-  const { name, date, category, amount } = req.body
+  const { name, date, category, amount, merchant } = req.body
 
   return Record.findOne({ _id, userId })
     .then(recordFound => {
@@ -76,6 +76,7 @@ router.put('/:id', (req, res) => {
               recordFound.date = date
               recordFound.category = category
               recordFound.amount = amount
+              recordFound.merchant = merchant
 
               return recordFound.save()
                 .then(() => {
