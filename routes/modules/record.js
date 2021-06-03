@@ -18,8 +18,9 @@ router.get('/new', (req, res) => {
 
 router.post('/', (req, res) => {
   const { name, date, category, amount } = req.body
+  const userId = req.user._id
 
-  const record = new Record({ name, date, category, amount })
+  const record = new Record({ name, date, category, amount, userId })
 
   return record.save()
     .then(() => {
@@ -36,12 +37,13 @@ router.post('/', (req, res) => {
 
 // route: update expense
 router.get('/:id/edit', (req, res) => {
-  const id = req.params.id
+  const _id = req.params.id
+  const userId = req.user._id
 
   return Category.find()
     .lean()
     .then(categories => {
-      return Record.findById(id)
+      return Record.findOne({ _id, userId })
         .populate('category')
         .lean()
         .then(record => {
@@ -50,19 +52,19 @@ router.get('/:id/edit', (req, res) => {
 
           dateString = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`
 
-          res.render('edit', { categories, record, dateString })
+          return res.render('edit', { categories, record, dateString })
         })
+        .catch(err => console.log(err))
     })
-    .catch(err => {
-      console.error(err)
-    })
+    .catch(err => console.error(err))
 })
 
 router.put('/:id', (req, res) => {
-  const id = req.params.id
+  const _id = req.params.id
+  const userId = req.user._id
   const { name, date, category, amount } = req.body
 
-  return Record.findById(id)
+  return Record.findOne({ _id, userId })
     .then(recordFound => {
       // 原類別 remove old record
       return Category.findOneAndUpdate({ _id: recordFound.category, record: recordFound._id }, { $pull: { 'record': recordFound._id } })
@@ -83,6 +85,7 @@ router.put('/:id', (req, res) => {
                   console.error(err)
                 })
             })
+            .catch(err => console.log(err))
         })
         .catch(err => {
           console.error(err)
@@ -96,9 +99,10 @@ router.put('/:id', (req, res) => {
 
 // route: delete expense function
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
+  const _id = req.params.id
+  const userId = req.user._id
 
-  return Record.findById(id)
+  return Record.findOne({ _id, userId })
     .then(recordFound => {
       return Category.findOneAndUpdate({ _id: recordFound.category }, { $pull: { 'record': recordFound._id } })
         .then(() => {

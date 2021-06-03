@@ -5,7 +5,8 @@ const router = express.Router()
 
 // route: browse all expenses
 router.get('/', (req, res) => {
-  return Record.find()
+  const userId = req.user._id
+  return Record.find({ userId })
     .populate('category')
     .lean()
     .then(lists => {
@@ -32,7 +33,7 @@ router.get('/', (req, res) => {
 router.get('/sort', (req, res) => {
   const categoryName = req.query.category
 
-  if(!categoryName) return res.redirect('/')
+  if (!categoryName) return res.redirect('/')
 
   return Category.find()
     .populate({
