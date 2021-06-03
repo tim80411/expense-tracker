@@ -9,7 +9,7 @@ module.exports = app => {
   app.use(passport.initialize())
   app.use(passport.session())
 
-  passport.use(new LocaStrategy({ usernameField: 'email' }, (email, password, done) => {
+  passport.use(new LocaStrategy({ usernameField: 'email' }, ( email, password, done) => {
     User.findOne({ email })
       .then(user => {
         if (!user) {

@@ -3,6 +3,7 @@ const app = express()
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const session = require('express-session')
+const flash = require('connect-flash')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -28,6 +29,8 @@ app.use(session({
   saveUninitialized: true
 }))
 
+app.use(flash())
+
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
@@ -36,7 +39,8 @@ usePassport(app)
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
-
+  res.locals.error = req.flash('error')
+  res.locals.success = req.flash('success')
   next()
 })
 

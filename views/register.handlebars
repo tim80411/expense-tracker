@@ -6,21 +6,26 @@
       <div class="card-body">
         <form action="/users/register" class="needs-validation" method="POST" novalidate>
           <h1 class="card-title text-center mb-4 pb-3 border-bottom">Register</h1>
+          {{> message}}
           <div class="form-group">
             <label for="name">Name*</label>
-            <input class="form-control" id="name" name="name" type="text">
+            <input class="form-control" id="name" name="name" type="text"
+            {{#if name}}value="{{name}}"{{/if}}>
           </div>
           <div class="form-group">
             <label for="email">Email*</label>
-            <input class="form-control" id="email" name="email" type="email">
+            <input class="form-control" id="email" name="email" type="email"
+            {{#if email}}value="{{email}}"{{/if}}>
           </div>
           <div class="form-group">
             <label for="password">password*</label>
-            <input class="form-control" id="password" name="password" type="password">
+            <input class="form-control" id="password" name="password" type="password"
+            {{#if password}}value="{{password}}"{{/if}}>
           </div>
           <div class="form-group">
             <label for="confirmPassword">confirm password*</label>
-            <input class="form-control" id="confirmPassword" name="confirmPassword" type="password">
+            <input class="form-control" id="confirmPassword" name="confirmPassword" type="password" 
+            {{#if confirmPassword}}value="{{confirmPassword}}"{{/if}}>
           </div>
           <button type="submit" class="btn btn-primary btn-block mt-4">Register</button>
         </form>
