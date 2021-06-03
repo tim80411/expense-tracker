@@ -1,68 +1,41 @@
 const express = require('express')
 const Record = require('../../models/Record')
 const Category = require('../../models/Category')
+const { formatDate } = require('../../lib/myLib')
 const router = express.Router()
 
-// route: browse all expenses
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+  const { category, month } = req.query
   const userId = req.user._id
-  return Record.find({ userId })
-    .populate('category')
-    .lean()
-    .then(lists => {
-      return Category.find()
-        .lean()
-        .then(categories => {
-          lists.forEach(list => {
-            const date = list.date
-            let dateString = ''
+  let lists = []
 
-            dateString = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`
+  try {
+    const categories = await Category.find().lean()
+    const records = await Record.find({ userId }).populate('category').lean()
 
-            list.date = dateString
-          })
-          res.render('index', { lists, categories })
-        })
-    })
-    .catch(err => {
-      console.error(err)
-    })
-})
+    const months = records
+      .map(record => {
+        const date = record.date
+        record.date = formatDate(date).slice(0, 7)
 
-// route: sort function
-router.get('/sort', (req, res) => {
-  const categoryName = req.query.category
+        return record.date
+      })
+      .filter((month, i, arr) => arr.indexOf(month) === i)
 
-  if (!categoryName) return res.redirect('/')
-
-  return Category.find()
-    .populate({
-      path: 'record',
-      populate: [{
-        path: 'category'
-      }]
-    })
-    .lean()
-    .then(categories => {
-      const categoryFiltered = categories.filter(category => category.name === categoryName)
-
-      const lists = categoryFiltered[0].record
-
-      lists.forEach(list => {
-        const date = list.date
-        let dateString = ''
-
-        dateString = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`
-
-        list.date = dateString
+    lists = records
+      .filter(record => {
+        if (!category) return true
+        return record.category.name === category
+      })
+      .filter(record => {
+        if (!month) return true
+        return record.date.slice(0, 7) === month
       })
 
-      res.render('index', { lists, categoryName, categories })
-
-    })
-    .catch(err => {
-      console.error(err)
-    })
+    res.render('index', { lists, categories, months, category, month })
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 module.exports = router

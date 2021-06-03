@@ -18,7 +18,6 @@
 <body class="bg-light">
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
-      <div class="container">
         <a class="navbar-brand" href="/">
           <i class="fas fa-wallet"></i>
           家庭記帳本
@@ -30,13 +29,7 @@
               <a href="/record/new" class="btn btn-success" type="submit">新增支出</a>
             </li>
           </ul>
-
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
         </div>
-      </div>
       {{#if isAuthenticated}}
       <a href="/users/logout" class="btn btn-primary">logout</a>
       {{else}}

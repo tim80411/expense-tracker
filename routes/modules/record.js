@@ -1,15 +1,17 @@
 const express = require('express')
 const Record = require('../../models/Record')
 const Category = require('../../models/Category')
+const { formatDate } = require('../../lib/myLib')
 
 const router = express.Router()
 
 // route: add expense function
 router.get('/new', (req, res) => {
+  const timeNow = formatDate(new Date())
   return Category.find()
     .lean()
     .then(categories => {
-      res.render('new', { categories })
+      res.render('new', { categories, timeNow })
     })
     .catch(err => {
       console.error(err)
@@ -48,9 +50,7 @@ router.get('/:id/edit', (req, res) => {
         .lean()
         .then(record => {
           const date = record.date
-          let dateString = ''
-
-          dateString = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`
+          const dateString = formatDate(date)
 
           return res.render('edit', { categories, record, dateString })
         })

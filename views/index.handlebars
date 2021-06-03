@@ -6,12 +6,20 @@
   <div class="row justify-content-center">
     <div class="col-2"></div>
     <div class="col-8">
-      <form action="/sort">
-        <select name="category" id="category" class="form-control" onchange="this.form.submit()">
+      <form action="/" class="row">
+        <select name="category" id="category" class="form-control col-6" onchange="this.form.submit()">
           <option value="">請選擇類別</option>
           {{#each categories}}
-          <option value="{{this.name}}" {{#if (eq this.name ../categoryName )}} selected {{/if}}>
+          <option value="{{this.name}}" {{#if (eq this.name ../category )}} selected {{/if}}>
             {{this.name}}
+          </option>
+          {{/each}}
+        </select>
+        <select name="month" id="month" class="form-control col-6" onchange="this.form.submit()">
+          <option value="">請選擇月份</option>
+          {{#each months}}
+          <option value="{{this}}" {{#if (eq this ../month )}} selected {{/if}}>
+            {{this}}
           </option>
           {{/each}}
         </select>
@@ -26,7 +34,7 @@
           <h3 for="">總金額：</h5>
         </div>
         <div class="col-8 text-right align-text-bottom">
-          <h1 class="font-weight-bold total-price">600</h1>
+          <h1 class="font-weight-bold total-price">0</h1>
         </div>
       </div>
     </div>
