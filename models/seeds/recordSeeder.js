@@ -73,45 +73,4 @@ db.once('open', async () => {
   } catch (err) {
     console.error(err)
   }
-
-  // return Category.find()
-  //   .then(categories => {
-  //     categories.forEach(category => {
-  //       expenses.forEach(expense => {
-  //         if (category.name === expense.category) {
-  //           expense.category = category._id
-
-  //           const recordTemp = new Record(expense)
-
-  //           return recordTemp.save()
-  //             .then(() => {
-  //               console.log(`${expense.name} expense create success`)
-
-  //               category.record = recordTemp._id
-
-  //               return category.save()
-  //                 .then(() => {
-  //                   console.log(`${category.name} category renew success`)
-  //                   dbClosedCount++
-  //                 })
-  //                 .catch(err => {
-  //                   console.error(err)
-  //                   dbClosedCount++
-  //                 })
-  //             })
-  //             .then(() => {
-  //               if (dbClosedCount === expenses.length) {
-  //                 return db.close()
-  //                   .then(() => {
-  //                     console.log('db connection close')
-  //                   })
-  //                   .catch(err => {
-  //                     console.error(err)
-  //                   })
-  //               }
-  //             })
-  //         }
-  //       })
-  //     })
-  //   })
 })
