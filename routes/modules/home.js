@@ -21,7 +21,8 @@ router.get('/', async (req, res) => {
         return record.date
       })
       .filter((month, i, arr) => arr.indexOf(month) === i)
-
+    
+    // 雙重搜索
     lists = records
       .filter(record => {
         if (!category) return true
@@ -34,7 +35,9 @@ router.get('/', async (req, res) => {
 
     res.render('index', { lists, categories, months, category, month })
   } catch (error) {
-    console.error(error)
+
+    // TODO：設計一個error頁面去接error跟redirect
+    res.send('database loading failed, please wait a moment then try again')
   }
 })
 

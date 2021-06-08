@@ -48,8 +48,10 @@ router.post('/register', async (req, res) => {
 
     res.redirect('/users/login')
 
-  } catch (error) {
-    console.error(error)
+  } catch (err) {
+    error.push('register failed, please try again.')
+
+    return res.render('register', { name, email, password, confirmPassword, error })
   }
 
 })

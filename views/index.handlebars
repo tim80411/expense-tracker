@@ -2,10 +2,12 @@
 {{css "/css/index.css"}}
 
 <div class="container mt-4">
-
   <div class="row justify-content-center">
     <div class="col-2"></div>
     <div class="col-8">
+
+        {{> message}}
+
       <form action="/" class="row">
         <select name="category" id="category" class="form-control col-6" onchange="this.form.submit()">
           <option value="">請選擇類別</option>

@@ -14,9 +14,10 @@ router.get('/new', async (req, res) => {
 
     res.render('new', { categories, timeNow })
 
-  } catch (error) {
-    console.error(error)
-  }
+  } catch (error) {    
+    req.flash('error', 'database loading failed, please wait a moment then try again')
+
+    res.redirect('/')  }
 })
 
 router.post('/', async (req, res) => {
@@ -33,7 +34,9 @@ router.post('/', async (req, res) => {
 
     res.redirect('/')
   } catch (error) {
-    console.error(error)
+    req.flash('error', 'database loading failed, please wait a moment then try again')
+
+    res.redirect('/')
   }
 
 })
@@ -53,7 +56,9 @@ router.get('/:id/edit', async (req, res) => {
     return res.render('edit', { categories, record, dateString })
 
   } catch (error) {
-    console.error(error)
+    req.flash('error', 'database loading failed, please wait a moment then try again')
+
+    res.redirect('/')
   }
 
 })
@@ -81,8 +86,9 @@ router.put('/:id', async (req, res) => {
     res.redirect('/')
 
   } catch (error) {
-    console.error(error)
-  }
+    req.flash('error', 'database loading failed, please wait a moment then try again')
+
+    res.redirect('/')  }
 
 })
 
@@ -100,8 +106,10 @@ router.delete('/:id', async (req, res) => {
     res.redirect('/')
     
   } catch (error) {
-    console.error(error)
-  }
+    req.flash('error', 'database loading failed, please wait a moment then try again')
+
+    res.redirect('/')
+   }
 })
 
 module.exports = router
