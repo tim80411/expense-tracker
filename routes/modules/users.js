@@ -20,7 +20,7 @@ router.get('/register', (req, res) => {
   res.render('register')
 })
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const { name, email, password, confirmPassword } = req.body
   const error = []
 
@@ -36,16 +36,21 @@ router.post('/register', (req, res) => {
     return res.render('register', { name, email, password, confirmPassword, error })
   }
 
-  bcrypt
-    .genSalt(10)
-    .then(salt => bcrypt.hash(password, salt))
-    .then(hash => User.create({
+  try {
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password, salt)
+
+    await User.create({
       name,
       email,
       password: hash
-    }))
-    .then(() => res.redirect('/users/login')) // TODO：註冊完應該直接登入
-    .catch(err => console.log(err))
+    })
+
+    res.redirect('/users/login')
+
+  } catch (error) {
+    console.error(error)
+  }
 
 })
 
