@@ -45,6 +45,13 @@ const recordService = {
 
     await recordFound.save()
   },
+
+  deleteRecord: async (_id, userId) => {
+    const recordFound = Record.findOne({ _id, userId })
+    await Category.findOneAndUpdate({ _id: recordFound.category }, { $pull: { 'record': recordFound._id } })
+
+    await recordFound.remove()
+  }
 }
 
 module.exports = recordService

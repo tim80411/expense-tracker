@@ -48,28 +48,22 @@ const recordController = {
     try {
       await recordService.putRecord(_id, userId, recordInfo)
 
-      res.redirect('/')
+      return res.redirect('/')
     } catch (error) {
       next(error)
     }
   },
 
-  deleteRecord: async (req, res) => {
+  deleteRecord: async (req, res, next) => {
     const _id = req.params.id
     const userId = req.user._id
 
     try {
-      const recordFound = Record.findOne({ _id, userId })
-      await Category.findOneAndUpdate({ _id: recordFound.category }, { $pull: { 'record': recordFound._id } })
+      await recordService.deleteRecord(_id, userId)
 
-      await recordFound.remove()
-
-      res.redirect('/')
-
+      return res.redirect('/')
     } catch (error) {
-      req.flash('error', 'database loading failed, please wait a moment then try again')
-
-      res.redirect('/')
+      next(error)
     }
   }
 }
