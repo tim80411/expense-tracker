@@ -1,6 +1,3 @@
-const Record = require('../models/Record')
-const Category = require('../models/Category')
-const { formatDate } = require('../lib/myLib')
 const recordService = require('../services/recordService')
 
 const recordController = {
