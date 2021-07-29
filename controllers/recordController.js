@@ -40,31 +40,17 @@ const recordController = {
     }
   },
 
-  putRecord: async (req, res) => {
+  putRecord: async (req, res, next) => {
     const _id = req.params.id
     const userId = req.user._id
-    const { name, date, category, amount, merchant } = req.body
+    const recordInfo = req.body
 
     try {
-      const recordFound = await Record.findOne({ _id, userId })
-
-      await Category.findOneAndUpdate({ _id: recordFound.category, record: recordFound._id }, { $pull: { 'record': recordFound._id } })
-
-      await Category.findOneAndUpdate({ _id: category }, { $addToSet: { 'record': recordFound._id } })
-
-      recordFound.name = name
-      recordFound.date = date
-      recordFound.category = category
-      recordFound.amount = amount
-      recordFound.merchant = merchant
-
-      await recordFound.save()
+      await recordService.putRecord(_id, userId, recordInfo)
 
       res.redirect('/')
     } catch (error) {
-      req.flash('error', 'database loading failed, please wait a moment then try again')
-
-      res.redirect('/')
+      next(error)
     }
   },
 

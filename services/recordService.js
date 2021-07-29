@@ -30,7 +30,21 @@ const recordService = {
     await categoryFound.save()
   },
 
+  putRecord: async (_id, userId, recordInfo) => {
+    const { name, date, category, amount, merchant } = recordInfo
+    const recordFound = await Record.findOne({ _id, userId })
 
+    await Category.findOneAndUpdate({ _id: recordFound.category, record: recordFound._id }, { $pull: { 'record': recordFound._id } })
+    await Category.findOneAndUpdate({ _id: category }, { $addToSet: { 'record': recordFound._id } })
+
+    recordFound.name = name
+    recordFound.date = date
+    recordFound.category = category
+    recordFound.amount = amount
+    recordFound.merchant = merchant
+
+    await recordFound.save()
+  },
 }
 
 module.exports = recordService
