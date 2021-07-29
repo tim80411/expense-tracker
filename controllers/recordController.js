@@ -1,20 +1,29 @@
 const Record = require('../models/Record')
 const Category = require('../models/Category')
 const { formatDate } = require('../lib/myLib')
+const recordService = require('../services/recordService')
 
 const recordController = {
-  getNewPage: async (req, res) => {
-    const timeNow = formatDate(new Date())
+  getEditPage: async (req, res, next) => {
+    const _id = req.params.id
+    const userId = req.user._id
 
     try {
-      const categories = await Category.find().lean()
+      const data = await recordService.getEditPage(_id, userId)
 
-      res.render('new', { categories, timeNow })
-
+      return res.render('edit', data)
     } catch (error) {
-      req.flash('error', 'database loading failed, please wait a moment then try again')
+      next(error)
+    }
+  },
 
-      res.redirect('/')
+  getNewPage: async (req, res, next) => {
+    try {
+      const data = await recordService.getNewPage()
+
+      return res.render('new', data)
+    } catch (error) {
+      next(error)
     }
   },
 
@@ -38,24 +47,7 @@ const recordController = {
     }
   },
 
-  getEditPage: async (req, res) => {
-    const _id = req.params.id
-    const userId = req.user._id
 
-    try {
-      const categories = await Category.find().lean()
-      const record = await Record.findOne({ _id, userId }).populate('category').lean()
-
-      const date = record.date
-      const dateString = formatDate(date)
-
-      return res.render('edit', { categories, record, dateString })
-    } catch (error) {
-      req.flash('error', 'database loading failed, please wait a moment then try again')
-
-      res.redirect('/')
-    }
-  },
 
   putRecord: async (req, res) => {
     const _id = req.params.id
