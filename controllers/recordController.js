@@ -27,27 +27,18 @@ const recordController = {
     }
   },
 
-  postRecord: async (req, res) => {
-    const { name, date, category, amount, merchant } = req.body
+  postRecord: async (req, res, next) => {
+    const record = req.body
     const userId = req.user._id
 
     try {
-      const record = await Record.create({ name, date, category, amount, merchant, userId })
-      const categoryFound = await Category.findOne({ _id: category })
+      await recordService.postRecord(record, userId)
 
-      categoryFound.record.push(record._id)
-
-      await categoryFound.save()
-
-      res.redirect('/')
+      return res.redirect('/')
     } catch (error) {
-      req.flash('error', 'database loading failed, please wait a moment then try again')
-
-      res.redirect('/')
+      next(error)
     }
   },
-
-
 
   putRecord: async (req, res) => {
     const _id = req.params.id

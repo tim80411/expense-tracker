@@ -20,6 +20,16 @@ const recordService = {
     return { categories, timeNow }
   },
 
+  postRecord: async (record, userId) => {
+    const { name, date, category, amount, merchant } = record
+
+    const recordDb = await Record.create({ name, date, category, amount, merchant, userId })
+    const categoryFound = await Category.findOne({ _id: category })
+
+    categoryFound.record.push(recordDb._id)
+    await categoryFound.save()
+  },
+
 
 }
 
