@@ -2,3 +2,4 @@ language: node_js
 deploy:
   provider: heroku:https://git.heroku.com/lit-cliffs-37717.git
   edge: true # opt in to dpl v2
+  app: lit-cliffs-37717
